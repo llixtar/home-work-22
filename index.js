@@ -1,31 +1,30 @@
 // ----  1  ----
 console.log('\n#1. Лічильник за допомогою замикання:');
-const counter = function (n) {
-  if (n !== undefined) {
-    this.value = n;
-  }
 
-  return function () {
-    if (this.value === undefined) {
-      this.value = 0;
+const counter = function (n) {
+  let val = 0;
+  return function (newValue) {
+    if (newValue !== undefined) {
+      val = newValue
     }
-    return this.value++;
+    return val++;
   };
+
 };
 
 const counterFunc = counter();
 
-console.log(counterFunc());
-console.log(counterFunc());
-console.log(counter(100));
-console.log(counterFunc());
-console.log(counterFunc());
-console.log(counter(500));
-console.log(counterFunc());
-console.log(counterFunc());
-console.log(counter(0));
-console.log(counterFunc());
-console.log(counterFunc());
+console.log(counterFunc()) // 0
+console.log(counterFunc()) // 1
+console.log(counterFunc(100)) // 100
+console.log(counterFunc()) // 101
+console.log(counterFunc()) // 102
+console.log(counterFunc(500)) // 500
+console.log(counterFunc()) // 501
+console.log(counterFunc()) // 502
+console.log(counterFunc(0)) // 0
+console.log(counterFunc()) // 1
+console.log(counterFunc()) // 2
 
 // ----  2  ----
 console.log('\n#2. Три методи за допомогою замикання:');
@@ -80,10 +79,29 @@ const myPrint = (a, b, res) => {
   return `${a}^${b}=${res}`;
 };
 
-const myPow = (a, b) => {
+/*const myPow = (a, b) => {
+  let res;
   if (b === 0) return 1;
   if (b > 0) return a * myPow(a, b - 1);
-  if (b < 0) return 1 / myPow(a, -b); 
+  if (b < 0) return 1 / myPow(a, -b);
+};*/
+
+const myPow = (a, b, myPrint) => {
+  let res;
+  if (b === 0) {
+    res = 1;
+  }
+  if (b > 0) {
+    res = a * myPow(a, b - 1);
+  }
+  if (b < 0) {
+    res = 1 / myPow(a, -b);
+  }
+
+  if (myPrint) 
+    return myPrint(a, b, res);
+  else
+    return res;
 };
 
 console.log(myPow(3, 4, myPrint)) // 3^4=81
